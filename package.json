@@ -9,7 +9,6 @@
   "author": "Brian Lee <brianjleeofcl@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.282.1",
     "gphoto2": "^0.3.0"
   }
 }
