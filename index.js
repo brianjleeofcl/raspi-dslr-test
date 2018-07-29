@@ -22,11 +22,12 @@ const takePicture = function(camera, count) {
 }
 
 const main = function(camera) {
-  let count = 0
+  let count = 0;
 
   let timer = setInterval(() => {
       if (count > 5) {
         clearInterval(timer);
+        logger.write(`[${Date.now()}]: finished shoot\r\n`)
         return process.exit(0);
       }
 
