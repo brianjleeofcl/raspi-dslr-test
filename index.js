@@ -25,7 +25,7 @@ const main = function(camera) {
   let count = 0;
 
   let timer = setInterval(() => {
-      if (count > 5) {
+      if (count > 1200) {
         clearInterval(timer);
         logger.write(`[${Date.now()}]: finished shoot\r\n`)
         return process.exit(0);
@@ -33,7 +33,7 @@ const main = function(camera) {
 
       takePicture(camera, count);
       count += 1;
-  }, 6000)
+  }, 30000);
 }
 
 GPhoto.list(function (list) {
