@@ -27,7 +27,8 @@ const main = function(camera) {
   let timer = setInterval(() => {
       if (count > 1200) {
         clearInterval(timer);
-        logger.write(`[${Date.now()}]: finished shoot\r\n`)
+        logger.write(`[${Date.now()}]: finished shoot\r\n`);
+        logger.close();
         return process.exit(0);
       }
 
