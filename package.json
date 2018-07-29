@@ -1,0 +1,11 @@
+{
+  "name": "raspi-dslr",
+  "version": "1.0.0",
+  "description": "Raspberry Pi DSLR Control & Web Upload",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brian Lee <brianjleeofcl@gmail.com>",
+  "license": "MIT"
+}
