@@ -11,7 +11,7 @@ GPhoto.on('log', function (level, domain, message) {
 const logPath = path.join(__dirname, "operation.log");
 const logger = fs.createWriteStream(logPath, {flags: 'a'});
 
-const takePicture = function(camera) {
+const takePicture = function(camera, count) {
   camera.takePicture({keep: true, download: false}, function (er) {
     if (er) {
       logger.write(`[${Date.now()}]: ERROR: ${er}\r\n`);
@@ -25,9 +25,12 @@ const main = function(camera) {
   let count = 0
 
   let timer = setInterval(() => {
-      if (count > 5) clearInterval(timer);
+      if (count > 5) {
+        clearInterval(timer);
+        return process.exit(0);
+      }
 
-      takePicture(camera);
+      takePicture(camera, count);
       count += 1;
   }, 6000)
 }
@@ -43,7 +46,7 @@ GPhoto.list(function (list) {
       process.exit(1);
     }
     else {
-      logger.write('[${Date.now()}]: Starting shoot\r\n')
+      logger.write(`[${Date.now()}]: Starting shoot\r\n`)
       main(camera);
     }
   });
