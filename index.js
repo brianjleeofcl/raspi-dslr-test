@@ -56,7 +56,7 @@ GPhoto.list(function (list) {
       process.exit(1);
     }
     else {
-      const ts = Date.now();
+      const ts = Date.now().toString();
       logger.write(`[${Date.now()}]: Starting shoot ${ts}\r\n`)
       main(camera, ts);
     }
