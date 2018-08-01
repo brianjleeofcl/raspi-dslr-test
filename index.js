@@ -34,7 +34,7 @@ const main = function(camera, ts) {
   let timer = setInterval(() => {
       if (count > 720) {
         clearInterval(timer);
-        logger.write(`[${Date.now()}]: finished shoot\r\n`);
+        logger.write(`[${Date.now()}]: finished shoot ${ts}\r\n`);
         logger.close();
         return process.exit(0);
       }
@@ -57,7 +57,7 @@ GPhoto.list(function (list) {
     }
     else {
       const ts = Date.now();
-      logger.write(`[${ts}]: Starting shoot\r\n`)
+      logger.write(`[${Date.now()}]: Starting shoot ${ts}\r\n`)
       main(camera, ts);
     }
   });
