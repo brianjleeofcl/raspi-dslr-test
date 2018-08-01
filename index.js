@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var gphoto2 = require('gphoto2');
+var pad = require('left-pad');
 var GPhoto = new gphoto2.GPhoto2();
 
 GPhoto.setLogLevel(1);
@@ -11,30 +12,37 @@ GPhoto.on('log', function (level, domain, message) {
 const logPath = path.join(__dirname, "operation.log");
 const logger = fs.createWriteStream(logPath, {flags: 'a'});
 
-const takePicture = function(camera, count) {
-  camera.takePicture({keep: true, download: false}, function (er) {
+const takePicture = function(camera, path) {
+  camera.takePicture({keep: false, download: true}, function (er, data) {
     if (er) {
-      logger.write(`[${Date.now()}]: ERROR: ${er}\r\n`);
-    } else {
-      logger.write(`[${Date.now()}]: img #${count} saved\r\n`);
+      return logger.write(`[${Date.now()}]: ERROR: ${er}\r\n`);
     }
+
+    fs.writeFile(path.join(__dirname, path), data, (err) => {
+      if (err) {
+        logger.write(`[${Date.now()}]: ERROR: ${err}\r\n`);
+      } else {
+        logger.write(`[${Date.now()}]: ${path} saved\r\n`);
+      }
+    })    
   });
 }
 
-const main = function(camera) {
+const main = function(camera, ts) {
   let count = 0;
 
   let timer = setInterval(() => {
-      if (count > 1200) {
+      if (count > 720) {
         clearInterval(timer);
-        logger.write(`[${Date.now()}]: finished shoot\r\n`);
+        logger.write(`[${Date.now()}]: finished shoot ${ts}\r\n`);
         logger.close();
         return process.exit(0);
       }
 
-      takePicture(camera, count);
+      const outpath = path.join(ts, `${pad(count, 4, '0')}.jpg`);
+      takePicture(camera, outpath);
       count += 1;
-  }, 30000);
+  }, 40000);
 }
 
 GPhoto.list(function (list) {
@@ -48,8 +56,9 @@ GPhoto.list(function (list) {
       process.exit(1);
     }
     else {
-      logger.write(`[${Date.now()}]: Starting shoot\r\n`)
-      main(camera);
+      const ts = Date.now();
+      logger.write(`[${Date.now()}]: Starting shoot ${ts}\r\n`)
+      main(camera, ts);
     }
   });
 });
