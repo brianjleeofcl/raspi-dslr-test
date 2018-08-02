@@ -13,7 +13,7 @@ const logPath = path.join(__dirname, "operation.log");
 const logger = fs.createWriteStream(logPath, {flags: 'a'});
 
 const takePicture = function(camera, filepath) {
-  camera.takePicture({keep: true, download: true}, function (er) {
+  camera.takePicture({keep: true, download: true}, function (er, data) {
     if (er) {
       return logger.write(`[${Date.now()}]: ERROR: ${er}\r\n`);
     }
