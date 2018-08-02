@@ -13,7 +13,7 @@ const logPath = path.join(__dirname, "operation.log");
 const logger = fs.createWriteStream(logPath, {flags: 'a'});
 
 const takePicture = function(camera, path) {
-  camera.takePicture({keep: false, download: true}, function (er, data) {
+  camera.takePicture({keep: true, download: true}, function (er) {
     if (er) {
       return logger.write(`[${Date.now()}]: ERROR: ${er}\r\n`);
     }
@@ -42,7 +42,7 @@ const main = function(camera, ts) {
       const outpath = path.join(ts, `${pad(count, 4, '0')}.jpg`);
       takePicture(camera, outpath);
       count += 1;
-  }, 40000);
+  }, 33333);
 }
 
 GPhoto.list(function (list) {
